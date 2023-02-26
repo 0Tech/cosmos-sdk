@@ -22,7 +22,7 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	"github.com/cosmos/cosmos-sdk/x/internft"
-	// "github.com/cosmos/cosmos-sdk/x/internft/client/cli"
+	"github.com/cosmos/cosmos-sdk/x/internft/client/cli"
 	"github.com/cosmos/cosmos-sdk/x/internft/keeper"
 )
 
@@ -52,14 +52,12 @@ func (AppModuleBasic) RegisterGRPCGatewayRoutes(clientCtx client.Context, mux *r
 
 // GetTxCmd returns the transaction commands for the module
 func (AppModuleBasic) GetTxCmd() *cobra.Command {
-	// return cli.NewTxCmd()
-	return nil
+	return cli.NewTxCmd()
 }
 
 // GetQueryCmd returns the cli query commands for the module
 func (AppModuleBasic) GetQueryCmd() *cobra.Command {
-	// return cli.NewQueryCmd()
-	return nil
+	return cli.NewQueryCmd()
 }
 
 // ____________________________________________________________________________
