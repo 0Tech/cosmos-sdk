@@ -1,0 +1,117 @@
+syntax = "proto3";
+package cosmos.internft.v1alpha1;
+
+import "google/protobuf/any.proto";
+import "gogoproto/gogo.proto";
+
+import "cosmos/internft/v1alpha1/types.proto";
+
+option go_package = "github.com/cosmos/cosmos-sdk/x/internft";
+
+// Msg defines the module's Msg service.
+service Msg {
+  // Send defines a method to send an nft from one account to another account.
+  rpc Send(MsgSend) returns (MsgSendResponse);
+
+  // NewClass defines a method to create a class.
+  rpc NewClass(MsgNewClass) returns (MsgNewClassResponse);
+
+  // UpdateClass defines a method to update a class.
+  rpc UpdateClass(MsgUpdateClass) returns (MsgUpdateClassResponse);
+
+  // MintNFT defines a method to mint an nft.
+  rpc MintNFT(MsgMintNFT) returns (MsgMintNFTResponse);
+
+  // BurnNFT defines a method to burn an nft.
+  rpc BurnNFT(MsgBurnNFT) returns (MsgBurnNFTResponse);
+
+  // UpdateNFT defines a method to update an nft.
+  rpc UpdateNFT(MsgUpdateNFT) returns (MsgUpdateNFTResponse);
+}
+
+// MsgSend is the Msg/Send request type.
+message MsgSend {
+  // sender of the nft
+  string sender = 1;
+
+  // recipient of the nft
+  string recipient = 2;
+
+  // nft to send
+  NFT nft = 3 [(gogoproto.nullable) = false];
+}
+
+// MsgSendResponse is the Msg/Send response type.
+message MsgSendResponse {}
+
+// MsgNewClass is the Msg/NewClass request type.
+message MsgNewClass {
+  // owner of the new class
+  string owner = 1;
+
+  // traits of the new class
+  repeated Trait traits = 2 [(gogoproto.nullable) = false];
+
+  // app specific metadata of the new class (optional)
+  google.protobuf.Any data = 3;
+}
+
+// MsgNewClassResponse is the Msg/NewClass response type.
+message MsgNewClassResponse {
+  // identifier of the new class
+  string class_id = 1;
+}
+
+// MsgUpdateClass is the Msg/UpdateClass request type.
+message MsgUpdateClass {
+  // identifier of a class
+  string class_id = 1;
+
+  // app specific metadata of the class (optional)
+  google.protobuf.Any data = 2;
+}
+
+// MsgUpdateClassResponse is the Msg/UpdateClass response type.
+message MsgUpdateClassResponse {}
+
+// MsgMintNFT is the Msg/MintNFT request type.
+message MsgMintNFT {
+  // identifier of a class
+  string class_id = 1;
+
+  // properties of the new nft
+  repeated Property properties = 2 [(gogoproto.nullable) = false];
+
+  // recipient of the new nft
+  string recipient = 3;
+}
+
+// MsgMintNFTResponse is the Msg/MintNFT response type.
+message MsgMintNFTResponse {
+  // identifier of the new nft
+  string id = 1 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Uint", (gogoproto.nullable) = false];
+}
+
+// MsgBurnNFT is the Msg/BurnNFT request type.
+message MsgBurnNFT {
+  // owner of the nft
+  string owner = 1;
+
+  // nft to burn
+  NFT nft = 2 [(gogoproto.nullable) = false];
+}
+
+// MsgBurnNFTResponse is the Msg/BurnNFT response type.
+message MsgBurnNFTResponse {}
+
+// MsgUpdateNFT is the Msg/UpdateNFT request type.
+message MsgUpdateNFT {
+  // nft to update
+  NFT nft = 1 [(gogoproto.nullable) = false];
+
+  // new properties
+  repeated Property properties = 2 [(gogoproto.nullable) = false];
+}
+
+// MsgUpdateNFTResponse is the Msg/UpdateNFT response type.
+message MsgUpdateNFTResponse {}

@@ -1,0 +1,45 @@
+syntax = "proto3";
+package cosmos.internft.v1alpha1;
+
+import "gogoproto/gogo.proto";
+
+import "cosmos/internft/v1alpha1/types.proto";
+
+option go_package = "github.com/cosmos/cosmos-sdk/x/internft";
+
+// GenesisState defines the module's genesis state.
+message GenesisState {
+  // all the paramaters of the module
+  Params params = 1 [(gogoproto.nullable) = false];
+
+  // classes
+  repeated GenesisClass classes = 2 [(gogoproto.nullable) = false];
+}
+
+// GenesisClass defines a class and its relevant data.
+message GenesisClass {
+  // identifier of the class
+  string id = 1;
+
+  // traits of the class
+  repeated Trait traits = 2 [(gogoproto.nullable) = false];
+
+  // last minted nft of the class
+  string last_minted_nft_id = 3
+      [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Uint", (gogoproto.nullable) = false];
+
+  // nfts of the class
+  repeated GenesisNFT nfts = 4 [(gogoproto.nullable) = false];
+}
+
+// GenesisNFT defines an nft and its relevant data.
+message GenesisNFT {
+  // identifier of the nft
+  string id = 1 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Uint", (gogoproto.nullable) = false];
+
+  // properties of the nft
+  repeated Property properties = 2 [(gogoproto.nullable) = false];
+
+  // owner of the nft
+  string owner = 3;
+}

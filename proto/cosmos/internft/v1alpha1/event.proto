@@ -1,0 +1,48 @@
+syntax = "proto3";
+package cosmos.internft.v1alpha1;
+
+import "google/protobuf/any.proto";
+import "gogoproto/gogo.proto";
+
+import "cosmos/internft/v1alpha1/types.proto";
+
+option go_package = "github.com/cosmos/cosmos-sdk/x/internft";
+
+// EventSend is emitted on Msg/Send.
+message EventSend {
+  string sender   = 1;
+  string receiver = 2;
+  NFT    nft      = 3 [(gogoproto.nullable) = false];
+}
+
+// EventNewClass is emitted on Msg/NewClass.
+message EventNewClass {
+  Class class                = 1 [(gogoproto.nullable) = false];
+  repeated Trait      traits = 2 [(gogoproto.nullable) = false];
+  google.protobuf.Any data   = 3;
+}
+
+// EventUpdateClass is emitted on Msg/UpdateClass.
+message EventUpdateClass {
+  Class class              = 1 [(gogoproto.nullable) = false];
+  google.protobuf.Any data = 2;
+}
+
+// EventMintNFT is emitted on Msg/MintNFT.
+message EventMintNFT {
+  NFT               nft        = 1 [(gogoproto.nullable) = false];
+  repeated Property properties = 2 [(gogoproto.nullable) = false];
+  string            recipient  = 3;
+}
+
+// EventBurnNFT is emitted on Msg/BurnNFT.
+message EventBurnNFT {
+  string owner = 1;
+  NFT    nft   = 2 [(gogoproto.nullable) = false];
+}
+
+// EventUpdateNFT is emitted on Msg/UpdateNFT.
+message EventUpdateNFT {
+  NFT               nft        = 1 [(gogoproto.nullable) = false];
+  repeated Property properties = 2 [(gogoproto.nullable) = false];
+}
