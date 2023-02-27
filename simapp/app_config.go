@@ -17,6 +17,7 @@ import (
 	genutilmodulev1 "cosmossdk.io/api/cosmos/genutil/module/v1"
 	govmodulev1 "cosmossdk.io/api/cosmos/gov/module/v1"
 	groupmodulev1 "cosmossdk.io/api/cosmos/group/module/v1"
+	internftmodulev1alpha1 "github.com/cosmos/cosmos-sdk/andromeda-api/cosmos/internft/module/v1alpha1"
 	mintmodulev1 "cosmossdk.io/api/cosmos/mint/module/v1"
 	nftmodulev1 "cosmossdk.io/api/cosmos/nft/module/v1"
 	paramsmodulev1 "cosmossdk.io/api/cosmos/params/module/v1"
@@ -45,6 +46,7 @@ import (
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	"github.com/cosmos/cosmos-sdk/x/group"
+	"github.com/cosmos/cosmos-sdk/x/internft"
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
@@ -133,6 +135,7 @@ var (
 						authz.ModuleName,
 						feegrant.ModuleName,
 						nft.ModuleName,
+						internft.ModuleName,
 						group.ModuleName,
 						paramstypes.ModuleName,
 						upgradetypes.ModuleName,
@@ -222,6 +225,10 @@ var (
 			{
 				Name:   nft.ModuleName,
 				Config: appconfig.WrapAny(&nftmodulev1.Module{}),
+			},
+			{
+				Name:   internft.ModuleName,
+				Config: appconfig.WrapAny(&internftmodulev1alpha1.Module{}),
 			},
 			{
 				Name:   feegrant.ModuleName,

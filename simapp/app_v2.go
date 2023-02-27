@@ -60,6 +60,8 @@ import (
 	govkeeper "github.com/cosmos/cosmos-sdk/x/gov/keeper"
 	groupkeeper "github.com/cosmos/cosmos-sdk/x/group/keeper"
 	groupmodule "github.com/cosmos/cosmos-sdk/x/group/module"
+	internftkeeper "github.com/cosmos/cosmos-sdk/x/internft/keeper"
+	internftmodule "github.com/cosmos/cosmos-sdk/x/internft/module"
 	"github.com/cosmos/cosmos-sdk/x/mint"
 	mintkeeper "github.com/cosmos/cosmos-sdk/x/mint/keeper"
 	"github.com/cosmos/cosmos-sdk/x/params"
@@ -102,6 +104,7 @@ var (
 		groupmodule.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		nftmodule.AppModuleBasic{},
+		internftmodule.AppModuleBasic{},
 		consensus.AppModuleBasic{},
 	)
 )
@@ -139,6 +142,7 @@ type SimApp struct {
 	FeeGrantKeeper        feegrantkeeper.Keeper
 	GroupKeeper           groupkeeper.Keeper
 	NFTKeeper             nftkeeper.Keeper
+	InterNFTKeeper        internftkeeper.Keeper
 	ConsensusParamsKeeper consensuskeeper.Keeper
 
 	// simulation manager
@@ -238,6 +242,7 @@ func NewSimApp(
 		&app.FeeGrantKeeper,
 		&app.GroupKeeper,
 		&app.NFTKeeper,
+		&app.InterNFTKeeper,
 		&app.ConsensusParamsKeeper,
 	); err != nil {
 		panic(err)
