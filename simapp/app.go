@@ -87,6 +87,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/group"
 	groupkeeper "github.com/cosmos/cosmos-sdk/x/group/keeper"
 	groupmodule "github.com/cosmos/cosmos-sdk/x/group/module"
+	"github.com/cosmos/cosmos-sdk/x/internft"
+	internftkeeper "github.com/cosmos/cosmos-sdk/x/internft/keeper"
+	internftmodule "github.com/cosmos/cosmos-sdk/x/internft/module"
 	"github.com/cosmos/cosmos-sdk/x/mint"
 	mintkeeper "github.com/cosmos/cosmos-sdk/x/mint/keeper"
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
@@ -135,6 +138,7 @@ var (
 		groupmodule.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		nftmodule.AppModuleBasic{},
+		internftmodule.AppModuleBasic{},
 		consensus.AppModuleBasic{},
 	)
 
@@ -187,6 +191,7 @@ type SimApp struct {
 	FeeGrantKeeper        feegrantkeeper.Keeper
 	GroupKeeper           groupkeeper.Keeper
 	NFTKeeper             nftkeeper.Keeper
+	InterNFTKeeper        internftkeeper.Keeper
 	ConsensusParamsKeeper consensusparamkeeper.Keeper
 
 	// the module manager
@@ -252,6 +257,7 @@ func NewSimApp(
 		govtypes.StoreKey, paramstypes.StoreKey, consensusparamtypes.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
 		evidencetypes.StoreKey, capabilitytypes.StoreKey,
 		authzkeeper.StoreKey, nftkeeper.StoreKey, group.StoreKey,
+		internftkeeper.StoreKey,
 	)
 
 	tkeys := storetypes.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -367,6 +373,8 @@ func NewSimApp(
 
 	app.NFTKeeper = nftkeeper.NewKeeper(keys[nftkeeper.StoreKey], appCodec, app.AccountKeeper, app.BankKeeper)
 
+	app.InterNFTKeeper = internftkeeper.NewKeeper(keys[internftkeeper.StoreKey], appCodec, app.AccountKeeper, app.BankKeeper)
+
 	// create evidence keeper with router
 	evidenceKeeper := evidencekeeper.NewKeeper(
 		appCodec, keys[evidencetypes.StoreKey], app.StakingKeeper, app.SlashingKeeper,
@@ -404,6 +412,7 @@ func NewSimApp(
 		authzmodule.NewAppModule(appCodec, app.AuthzKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
 		groupmodule.NewAppModule(appCodec, app.GroupKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
 		nftmodule.NewAppModule(appCodec, app.NFTKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
+		internftmodule.NewAppModule(appCodec, app.InterNFTKeeper),
 		consensus.NewAppModule(appCodec, app.ConsensusParamsKeeper),
 	)
 
@@ -443,6 +452,7 @@ func NewSimApp(
 		distrtypes.ModuleName, stakingtypes.ModuleName, slashingtypes.ModuleName, govtypes.ModuleName,
 		minttypes.ModuleName, crisistypes.ModuleName, genutiltypes.ModuleName, evidencetypes.ModuleName, authz.ModuleName,
 		feegrant.ModuleName, nft.ModuleName, group.ModuleName, paramstypes.ModuleName, upgradetypes.ModuleName,
+		internft.ModuleName,
 		vestingtypes.ModuleName, consensusparamtypes.ModuleName,
 	}
 	app.ModuleManager.SetOrderInitGenesis(genesisModuleOrder...)
